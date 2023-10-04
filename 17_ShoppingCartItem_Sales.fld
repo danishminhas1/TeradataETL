@@ -1,0 +1,53 @@
+.LOGON 192.168.81.128/DBC,dbc;
+
+/* Define the target Teradata table */
+DATABASE DB_STG1;
+CREATE TABLE ShoppingCartItem_Sales_stg (
+    ShoppingCartItemID VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
+    ShoppingCartID VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
+    Quantity VARCHAR(255),
+    ProductID VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
+    DateCreated VARCHAR(255),
+    ModifiedDate VARCHAR(255)
+);
+
+/* Begin FastLoad */
+BEGIN LOADING ShoppingCartItem_Sales_stg
+ERRORFILES ShoppingCartItem_Sales_et, ShoppingCartItem_Sales_uv;
+
+SET RECORD VARTEXT ",";
+
+DEFINE
+ShoppingCartItemID (VARCHAR(255)),
+ShoppingCartID (VARCHAR(255)),
+Quantity (VARCHAR(255)),
+ProductID (VARCHAR(255)),
+DateCreated (VARCHAR(255)),
+ModifiedDate (VARCHAR(255)),
+FILE = "C:\Users\Acer\Desktop\DWH & BI\ETL_Project\Data\17 ShoppingCartItem_Sales.CSV";
+
+INSERT INTO ShoppingCartItem_Sales_stg (
+ShoppingCartItemID,
+ShoppingCartID,
+Quantity,
+ProductID,
+DateCreated,
+ModifiedDate
+)
+VALUES (
+:ShoppingCartItemID,
+:ShoppingCartID,
+:Quantity,
+:ProductID,
+:DateCreated,
+:ModifiedDate
+);
+
+/* End FastLoad */
+END LOADING;
+
+/* Logoff from Teradata */
+.LOGOFF;
+
+/* Terminate the script */
+QUIT;

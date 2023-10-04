@@ -1,0 +1,44 @@
+.LOGON 192.168.81.128/DBC,dbc;
+
+/* Define the target Teradata table */
+DATABASE DB_STG1;
+DROP TABLE ScrapReason_Production_stg;
+CREATE TABLE ScrapReason_Production_stg (
+    ScrapReasonID INTEGER,
+    Name VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
+    ModifiedDate DATE
+);
+
+/* Begin FastLoad */
+DROP TABLE ScrapReason_Production_et;
+DROP TABLE ScrapReason_Production_uv;
+BEGIN LOADING ScrapReason_Production_stg
+ERRORFILES ScrapReason_Production_et, ScrapReason_Production_uv;
+
+SET RECORD VARTEXT ",";
+
+DEFINE
+ScrapReasonID (VARCHAR(255)),
+Name (VARCHAR(255)),
+ModifiedDate (VARCHAR(255)),
+FILE = "C:\Users\Acer\Desktop\DWH & BI\ETL_Project\Data\ScrapReason_Production.CSV";
+
+INSERT INTO ScrapReason_Production_stg (
+ScrapReasonID,
+Name,
+ModifiedDate
+)
+VALUES (
+:ScrapReasonID,
+:Name,
+:ModifiedDate
+);
+
+/* End FastLoad */
+END LOADING;
+
+/* Logoff from Teradata */
+.LOGOFF;
+
+/* Terminate the script */
+QUIT;

@@ -1,0 +1,100 @@
+.LOGON 192.168.81.128/DBC,dbc;
+
+/* Define the target Teradata table */
+DATABASE DB_STG1;
+DROP TABLE hr_stg;
+CREATE TABLE hr_stg (
+    BusinessEntityID VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
+    NationalIDNumber VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
+    LoginID VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
+    JobTitle VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
+    BirthDate VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
+    Gender VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
+    HireDate VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
+    VacationHours VARCHAR(255),
+    SickLeaveHours VARCHAR(255),
+    Name1 VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
+    GroupName VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
+    Name2 VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
+    StartTime VARCHAR(255),
+    EndTime VARCHAR(255),
+    StartDate VARCHAR(255),
+    EndDate VARCHAR(255),
+    ModifiedDate VARCHAR(255)
+);
+
+/* Begin FastLoad */
+DROP TABLE hr_et;
+DROP TABLE hr_uv;
+BEGIN LOADING hr_stg
+ERRORFILES hr_et, hr_uv;
+
+SET RECORD VARTEXT ",";
+
+DEFINE
+BusinessEntityID (VARCHAR(255)),
+NationalIDNumber (VARCHAR(255)),
+LoginID (VARCHAR(255)),
+JobTitle (VARCHAR(255)),
+BirthDate (VARCHAR(255)),
+Gender (VARCHAR(255)),
+HireDate (VARCHAR(255)),
+VacationHours (VARCHAR(255)),
+SickLeaveHours (VARCHAR(255)),
+Name1 (VARCHAR(255)),
+GroupName (VARCHAR(255)),
+Name2 (VARCHAR(255)),
+StartTime (VARCHAR(255)),
+EndTime (VARCHAR(255)),
+StartDate (VARCHAR(255)),
+EndDate (VARCHAR(255)),
+ModifiedDate (VARCHAR(255)),
+FILE = "C:/Users/Acer/Desktop/DWH & BI/hr.csv";
+
+INSERT INTO hr_stg (
+BusinessEntityID,
+NationalIDNumber,
+LoginID,
+JobTitle,
+BirthDate,
+Gender,
+HireDate,
+VacationHours, 
+SickLeaveHours, 
+Name1, 
+GroupName, 
+Name2, 
+StartTime, 
+EndTime, 
+StartDate, 
+EndDate, 
+ModifiedDate
+)
+VALUES (
+:BusinessEntityID,
+:NationalIDNumber,
+:LoginID,
+:JobTitle,
+:BirthDate,
+:Gender,
+:HireDate,
+:VacationHours, 
+:SickLeaveHours, 
+:Name1, 
+:GroupName, 
+:Name2, 
+:StartTime, 
+:EndTime, 
+:StartDate, 
+:EndDate, 
+:ModifiedDate
+);
+
+/* End FastLoad */
+END LOADING;
+
+/* Logoff from Teradata */
+.LOGOFF;
+
+/* Terminate the script */
+QUIT;

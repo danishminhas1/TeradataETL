@@ -1,0 +1,60 @@
+.LOGON 192.168.81.128/DBC,dbc;
+
+/* Define the target Teradata table */
+DATABASE DB_STG1;
+DROP TABLE SalesTaxRate_Sales_stg;
+CREATE TABLE SalesTaxRate_Sales_stg (
+    SalesTaxRateID VARCHAR(255),
+    StateProvinceID VARCHAR(255),
+    TaxType VARCHAR(255),
+    TaxRate DECIMAL(10, 3),
+    Name VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
+    rowguid VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
+    ModifiedDate VARCHAR(255)
+);
+
+/* Begin FastLoad */
+DROP TABLE SalesTaxRate_Sales_et;
+DROP TABLE SalesTaxRate_Sales_uv;
+BEGIN LOADING SalesTaxRate_Sales_stg
+ERRORFILES SalesTaxRate_Sales_et, SalesTaxRate_Sales_uv;
+
+SET RECORD VARTEXT ",";
+
+DEFINE
+SalesTaxRateID (VARCHAR(255)),
+StateProvinceID (VARCHAR(255)),
+TaxType (VARCHAR(255)),
+TaxRate (VARCHAR(255)),
+Name (VARCHAR(255)),
+rowguid (VARCHAR(255)),
+ModifiedDate (VARCHAR(255)),
+FILE = "C:\Users\Acer\Desktop\DWH & BI\ETL_Project\Data\16 SalesTaxRate_Sales.CSV";
+
+INSERT INTO SalesTaxRate_Sales_stg (
+SalesTaxRateID,
+StateProvinceID,
+TaxType,
+TaxRate,
+Name,
+rowguid,
+ModifiedDate
+)
+VALUES (
+:SalesTaxRateID,
+:StateProvinceID,
+:TaxType,
+:TaxRate,
+:Name,
+:rowguid,
+:ModifiedDate
+);
+
+/* End FastLoad */
+END LOADING;
+
+/* Logoff from Teradata */
+.LOGOFF;
+
+/* Terminate the script */
+QUIT;
