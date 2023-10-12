@@ -2,8 +2,9 @@
 
 /* Define the target Teradata table */
 DATABASE DB_STG1;
+DROP TABLE ShoppingCartItem_Sales_stg;
 CREATE TABLE ShoppingCartItem_Sales_stg (
-    ShoppingCartItemID VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
+    ShoppingCartItemID INT,
     ShoppingCartID VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
     Quantity VARCHAR(255),
     ProductID VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,

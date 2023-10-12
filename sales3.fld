@@ -1,0 +1,92 @@
+.LOGON 192.168.81.128/DBC,dbc;
+
+/* Define the target Teradata table */
+DATABASE DB_STG1;
+DROP TABLE sales3_stg;
+CREATE TABLE sales3_stg (
+    BusinessEntityID VARCHAR(500),
+    SalesOrderID VARCHAR(500),
+    SalesOrderDetailID VARCHAR(500),
+    CarrierTrackingNumber VARCHAR(500),
+    OrderQty1 INT,
+    ProductID VARCHAR(500),
+    SpecialOfferID VARCHAR(500),
+    UnitPrice VARCHAR(500),
+    UnitPriceDiscount VARCHAR(500),
+    LineTotal VARCHAR(500),
+    rowguid VARCHAR(500),
+    ModifiedDate DATE,
+    ProductID2 VARCHAR(500),
+    SpecialOfferID2 VARCHAR(500),
+    UnitPrice2 VARCHAR(500),
+    UnitPriceDiscount2 VARCHAR(500),
+    SalesOrderID2 VARCHAR(500),
+    SalesOrderDetailID2 VARCHAR(500),
+    CarrierTrackingNumber2 VARCHAR(500),
+    OrderQty2 VARCHAR(500)
+);
+
+DROP TABLE Sales3_et;
+DROP table Sales3_uv;
+BEGIN LOADING sales3_stg
+ERRORFILES Sales3_et, Sales3_uv;
+
+SET RECORD VARTEXT ",";
+
+DEFINE
+BusinessEntityID (VARCHAR(500)),
+SalesOrderID (VARCHAR(500)),
+SalesOrderDetailID (VARCHAR(500)),
+CarrierTrackingNumber (VARCHAR(500)),
+OrderQty1 (VARCHAR(500)),
+ProductID (VARCHAR(500)),
+SpecialOfferID (VARCHAR(500)),
+UnitPrice (VARCHAR(500)),
+UnitPriceDiscount (VARCHAR(500)),
+LineTotal (VARCHAR(500)),
+rowguid (VARCHAR(500)),
+ModifiedDate (VARCHAR(500)),
+ProductID2 (VARCHAR(500)),
+SpecialOfferID2 (VARCHAR(500)),
+UnitPrice2 (VARCHAR(500)),
+UnitPriceDiscount2 (VARCHAR(500)),
+SalesOrderID2 (VARCHAR(500)),
+SalesOrderDetailID2 (VARCHAR(500)),
+CarrierTrackingNumber2 (VARCHAR(500)),
+OrderQty2 (VARCHAR(500)),
+FILE = 'C:\Users\Acer\Desktop\DWH & BI\ETL_Project\Data\Sales3.csv';
+
+INSERT INTO sales3_stg
+VALUES
+(
+    :BusinessEntityID,
+    :SalesOrderID,
+    :SalesOrderDetailID,
+    :CarrierTrackingNumber,
+    :OrderQty1,
+    :ProductID,
+    :SpecialOfferID,
+    :UnitPrice,
+    :UnitPriceDiscount,
+    :LineTotal,
+    :rowguid,
+    :ModifiedDate,
+    :ProductID2,
+    :SpecialOfferID2,
+    :UnitPrice2,
+    :UnitPriceDiscount2,
+    :SalesOrderID2,
+    :SalesOrderDetailID2,
+    :CarrierTrackingNumber2,
+    :OrderQty2
+);
+
+
+/* End FastLoad */
+END LOADING;
+
+/* Logoff from Teradata */
+.LOGOFF;
+
+/* Terminate the script */
+QUIT;

@@ -4,7 +4,7 @@
 DATABASE DB_STG1;
 DROP TABLE hr_stg;
 CREATE TABLE hr_stg (
-    BusinessEntityID VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
+    BusinessEntityID INT,
     NationalIDNumber VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
     LoginID VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
     JobTitle VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
@@ -49,27 +49,9 @@ EndTime (VARCHAR(255)),
 StartDate (VARCHAR(255)),
 EndDate (VARCHAR(255)),
 ModifiedDate (VARCHAR(255)),
-FILE = "C:/Users/Acer/Desktop/DWH & BI/hr.csv";
+FILE = "C:\Users\Acer\Desktop\DWH & BI\ETL_Project\Data\hr.CSV";
 
-INSERT INTO hr_stg (
-BusinessEntityID,
-NationalIDNumber,
-LoginID,
-JobTitle,
-BirthDate,
-Gender,
-HireDate,
-VacationHours, 
-SickLeaveHours, 
-Name1, 
-GroupName, 
-Name2, 
-StartTime, 
-EndTime, 
-StartDate, 
-EndDate, 
-ModifiedDate
-)
+INSERT INTO hr_stg 
 VALUES (
 :BusinessEntityID,
 :NationalIDNumber,

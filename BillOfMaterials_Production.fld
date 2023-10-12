@@ -2,8 +2,9 @@
 
 /* Define the target Teradata table */
 DATABASE DB_STG1;
+DROP TABLE BillOfMaterials_Production_stg;
 CREATE TABLE BillOfMaterials_Production_stg (
-    BillOfMaterialsID VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
+    BillOfMaterialsID INT,
     ProductAssemblyID VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
     ComponentID VARCHAR(255) CHARACTER SET LATIN CASESPECIFIC,
     StartDate VARCHAR(255),
@@ -32,17 +33,7 @@ PerAssemblyQty (VARCHAR(255)),
 ModifiedDate (VARCHAR(255)),
 FILE = "C:\Users\Acer\Desktop\DWH & BI\ETL_Project\Data\BillOfMaterials_Production.CSV";
 
-INSERT INTO BillOfMaterials_Production_stg (
-BillOfMaterialsID,
-ProductAssemblyID,
-ComponentID,
-StartDate,
-EndDate,
-UnitMeasureCode,
-BOMLevel,
-PerAssemblyQty,
-ModifiedDate
-)
+INSERT INTO BillOfMaterials_Production_stg 
 VALUES (
 :BillOfMaterialsID,
 :ProductAssemblyID,

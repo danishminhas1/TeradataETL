@@ -4,7 +4,7 @@
 DATABASE DB_STG1;
 DROP TABLE purchase_stg;
 CREATE TABLE purchase_stg (
-  PurchaseOrderID VARCHAR(255),
+  PurchaseOrderID INT,
   PurchaseOrderDetailID VARCHAR(255),
   DueDate VARCHAR(255),
   OrderQty VARCHAR(255),
@@ -82,8 +82,6 @@ CREATE TABLE purchase_stg (
 
 
 /* Begin FastLoad */
-DROP TABLE purchase_et;
-DROP TABLE purchase_uv;
 BEGIN LOADING purchase_stg
 ERRORFILES purchase_et, purchase_uv;
 
@@ -164,7 +162,7 @@ DiscontinuedDate (VARCHAR(255)),
 rowguid2 (VARCHAR(255)),
 ModifiedDate6 (VARCHAR(255)),
 
-FILE="C:/Users/Acer/Desktop/DWH & BI/Purchase.csv";
+FILE="C:\Users\Acer\Desktop\DWH & BI\ETL_Project\Data\Purchase.CSV";
 
 /* Start loading data */
 INSERT INTO purchase_stg (

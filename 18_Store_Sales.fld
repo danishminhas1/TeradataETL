@@ -1,0 +1,49 @@
+.LOGON 192.168.81.128/DBC,dbc;
+
+/* Define the target Teradata table */
+DATABASE DB_STG1;
+DROP TABLE Store_Sales_stg;
+CREATE TABLE Store_Sales_stg (
+BusinessEntityID INT,
+    Name VARCHAR(255),
+    SalesPersonID VARCHAR(255),
+    Demographics VARCHAR(500), 
+    rowguid VARCHAR(255),
+    ModifiedDate VARCHAR(255)
+);
+
+/* Begin FastLoad */
+DROP TABLE Store_Sales_et;
+DROP TABLE Store_Sales_uv;
+BEGIN LOADING Store_Sales_stg
+ERRORFILES Store_Sales_et, Store_Sales_uv;
+
+SET RECORD VARTEXT ",";
+
+DEFINE
+BusinessEntityID (VARCHAR(255)),
+Name (VARCHAR(255)),
+SalesPersonID (VARCHAR(255)),
+Demographics (VARCHAR(500)),
+rowguid (VARCHAR(255)),
+ModifiedDate (VARCHAR(255)),
+FILE = "C:\Users\Acer\Desktop\DWH & BI\ETL_Project\Data\18_Store_Sales.CSV";
+
+INSERT INTO Store_Sales_stg
+VALUES (
+    :BusinessEntityID,
+    :Name,
+    :SalesPersonID,
+    :Demographics,
+    :rowguid,
+    :ModifiedDate
+);
+
+/* End FastLoad */
+END LOADING;
+
+/* Logoff from Teradata */
+.LOGOFF;
+
+/* Terminate the script */
+QUIT;
