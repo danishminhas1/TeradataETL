@@ -1,0 +1,64 @@
+.LOGON 192.168.81.128/DBC,dbc;
+
+DATABASE DB_STG1;
+DROP TABLE WorkOrderRouting_Production_stg;
+CREATE TABLE WorkOrderRouting_Production_stg (
+    WorkOrderID INTEGER,
+    ProductID INTEGER,
+    OperationSequence INTEGER,
+    LocationID INTEGER,
+    ScheduledStartDate DATE,
+    ScheduledEndDate DATE,
+    ActualStartDate DATE,
+    ActualEndDate DATE,
+    ActualResourceHrs DECIMAL(18, 3),
+    PlannedCost DECIMAL(18, 3),
+    ActualCost DECIMAL(18, 3),
+    ModifiedDate VARCHAR(255)
+);
+
+DROP TABLE WorkOrder_Err1;
+DROP TABLE WorkOrder_Err2;
+
+BEGIN LOADING WorkOrderRouting_Production_stg
+ERRORFILES WorkOrderRouting_ProductionErr1, WorkOrderRouting_ProductionErr2;
+
+SET RECORD VARTEXT ",";
+DEFINE
+WorkOrderID (VARCHAR(255)),
+ProductID (VARCHAR(255)),
+OperationSequence (VARCHAR(255)),
+LocationID (VARCHAR(255)),
+ScheduledStartDate (VARCHAR(255)),
+ScheduledEndDate (VARCHAR(255)),
+ActualStartDate (VARCHAR(255)),
+ActualEndDate (VARCHAR(255)),
+ActualResourceHrs (VARCHAR(255)),
+PlannedCost (VARCHAR(255)),
+ActualCost (VARCHAR(255)),
+ModifiedDate (VARCHAR(255)),
+FILE = 'C:\Users\Acer\Desktop\DWH & BI\ETL_Project\Data\WorkOrderRouting_Production.CSV';
+
+INSERT INTO WorkOrderRouting_Production_stg VALUES
+(
+    :WorkOrderID,
+    :ProductID,
+    :OperationSequence,
+    :LocationID,
+    :ScheduledStartDate,
+    :ScheduledEndDate,
+    :ActualStartDate,
+    :ActualEndDate,
+    :ActualResourceHrs,
+    :PlannedCost,
+    :ActualCost,
+    :ModifiedDate
+);
+/* End FastLoad */
+END LOADING;
+
+/* Logoff from Teradata */
+.LOGOFF;
+
+/* Terminate the script */
+QUIT;
